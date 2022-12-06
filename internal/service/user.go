@@ -5,6 +5,8 @@ import (
 	"fmt"
 	v1 "keydol/apiv1"
 	"keydol/internal/service/internal/dao"
+
+	"github.com/gogf/gf/v2/frame/g"
 )
 
 type UserServ struct{}
@@ -33,6 +35,10 @@ func (*UserServ) List(ctx context.Context, param *v1.ListUserReq) ([]*v1.ListUse
 	err := m.Scan(&list)
 	fmt.Println(list)
 	return list, err
+}
+
+func (*UserServ) Register(ctx context.Context, param *v1.RegisterReq) {
+	dao.User.Ctx(ctx).Data(g.Map{"id": param.Id, "username": param.Username, "password": param.Password}).Insert()
 }
 
 func Like(s string) string {

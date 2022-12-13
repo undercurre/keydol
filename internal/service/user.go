@@ -37,8 +37,9 @@ func (*UserServ) List(ctx context.Context, param *v1.ListUserReq) ([]*v1.ListUse
 	return list, err
 }
 
-func (*UserServ) Register(ctx context.Context, param *v1.RegisterReq) {
-	dao.User.Ctx(ctx).Data(g.Map{"id": param.Id, "username": param.Username, "password": param.Password}).Insert()
+func (*UserServ) Register(ctx context.Context, param *v1.RegisterReq) (err error) {
+	_, err = dao.User.Ctx(ctx).Data(g.Map{"id": param.Id, "username": param.Username, "password": param.Password}).Insert()
+	return err
 }
 
 func Like(s string) string {

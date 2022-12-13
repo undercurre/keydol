@@ -18,7 +18,6 @@ func (h *cUser) List(ctx context.Context, req *apiv1.ListUserReq) (res []*apiv1.
 	return list, err
 }
 
-func (h *cUser) Register(ctx context.Context, req *apiv1.RegisterReq) (res []*apiv1.RegisterRes, err error) {
-	user, err := service.User().Register(ctx, req)
-	return user, err
+func (h *cUser) Register(ctx context.Context, req *apiv1.RegisterReq) (err error) {
+	return service.User().Register(ctx, req)
 }

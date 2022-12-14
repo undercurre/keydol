@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"keydol/apiv1"
+	model "keydol/internal/model/do"
 	"keydol/internal/service"
 )
 
@@ -18,6 +19,11 @@ func (h *cUser) List(ctx context.Context, req *apiv1.ListUserReq) (res []*apiv1.
 	return list, err
 }
 
-func (h *cUser) Register(ctx context.Context, req *apiv1.RegisterReq) (err error) {
-	return service.User().Register(ctx, req)
+func (h *cUser) Register(ctx context.Context, req *apiv1.RegisterReq) (res *apiv1.RegisterRes, err error) {
+	err = service.User().Register(ctx, model.UserCreateInput{
+		Password: req.Password,
+		Username: req.Username,
+		Id:       req.Id,
+	})
+	return
 }

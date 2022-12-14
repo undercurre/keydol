@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	v1 "keydol/apiv1"
+	model "keydol/internal/model/do"
 	"keydol/internal/service/internal/dao"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -37,8 +38,8 @@ func (*UserServ) List(ctx context.Context, param *v1.ListUserReq) ([]*v1.ListUse
 	return list, err
 }
 
-func (*UserServ) Register(ctx context.Context, param *v1.RegisterReq) (err error) {
-	_, err = dao.User.Ctx(ctx).Data(g.Map{"id": param.Id, "username": param.Username, "password": param.Password}).Insert()
+func (*UserServ) Register(ctx context.Context, in model.UserCreateInput) (err error) {
+	_, err = dao.User.Ctx(ctx).Data(g.Map{"id": in.Id, "username": in.Username, "password": in.Password}).Insert()
 	return err
 }
 

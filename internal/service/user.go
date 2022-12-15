@@ -39,7 +39,7 @@ func (*UserServ) List(ctx context.Context, param *v1.ListUserReq) ([]*v1.ListUse
 }
 
 func (*UserServ) Register(ctx context.Context, in model.UserCreateInput) (err error) {
-	_, err = dao.User.Ctx(ctx).Data(g.Map{"id": in.Id, "username": in.Username, "password": in.Password}).Insert()
+	_, err = dao.User.Ctx(ctx).Data(g.Map{"username": in.Username, "password": in.Password, "email": in.Email}).Insert()
 	return err
 }
 

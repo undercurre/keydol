@@ -23,7 +23,7 @@ func (h *cUser) Register(ctx context.Context, req *apiv1.RegisterReq) (res *apiv
 	err = service.User().Register(ctx, model.UserCreateInput{
 		Password: req.Password,
 		Username: req.Username,
-		Id:       req.Id,
+		Email:    req.Email,
 	})
 	return
 }

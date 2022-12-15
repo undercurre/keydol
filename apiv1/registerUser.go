@@ -7,10 +7,10 @@ import (
 // 用户列表
 
 type RegisterReq struct {
-	g.Meta   `path:"/user/register" method:"post" tags:"UserService" method:"get" summary:"Register a new user"`
+	g.Meta   `path:"/user/register" method:"get" tags:"UserService" method:"post" summary:"Register a new user"`
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Id       string `json:"id"`
+	Email    string `json:"email"`
 }
 
 type RegisterRes struct{}

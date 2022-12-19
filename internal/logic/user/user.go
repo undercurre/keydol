@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"keybol/apiv1/backend"
 	"keybol/internal/dao"
 	"keybol/internal/model"
 	"keybol/internal/service"
@@ -42,4 +43,12 @@ func (s *sUser) Register(ctx context.Context, in model.UserRegisterInput) (out m
 		return out, err
 	}
 	return model.UserRegisterOutput{UserId: int(lastInsertID)}, err
+}
+
+func (s *sUser) List(ctx context.Context, in model.UserListInput) (users *[]backend.UserListRes, err error) {
+	users, err = dao.User.Ctx(ctx).All()
+	if err != nil {
+		return users, err
+	}
+	return users, err
 }

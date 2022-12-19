@@ -15,3 +15,18 @@ type UserRegisterReq struct {
 type UserRegisterRes struct {
 	UserId int `json:"id"`
 }
+
+type UserListReq struct {
+	g.Meta   `path:"/backend/user/list" tags:"User" method:"get" summary:"List of users"`
+	Username string `json:"username"`
+	Id       string `json:"id"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+}
+
+type UserListRes struct {
+	List  interface{} `json:"list" description:"列表"`
+	Page  int         `json:"page" description:"分页码"`
+	Size  int         `json:"size" description:"分页数量"`
+	Total int         `json:"total" description:"数据总数"`
+}

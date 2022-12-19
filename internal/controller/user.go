@@ -11,7 +11,7 @@ var User = cUser{}
 
 type cUser struct{}
 
-func (a *cUser) Create(ctx context.Context, req *backend.UserRegisterReq) (res *backend.UserRegisterRes, err error) {
+func (a *cUser) Register(ctx context.Context, req *backend.UserRegisterReq) (res *backend.UserRegisterRes, err error) {
 	out, err := service.User().Register(ctx, model.UserRegisterInput{
 		Username: req.Username,
 		Password: req.Password,
@@ -22,4 +22,12 @@ func (a *cUser) Create(ctx context.Context, req *backend.UserRegisterReq) (res *
 		return nil, err
 	}
 	return &backend.UserRegisterRes{UserId: out.UserId}, nil
+}
+
+func (a *cUser) List(ctx context.Context, req *backend.UserListReq) (res *backend.UserListRes, err error) {
+	out, err := service.User().List(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return out;
 }

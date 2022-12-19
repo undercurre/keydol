@@ -12,4 +12,6 @@ type UserRegisterReq struct {
 	Phone    string `json:"phone"    v:"required#手机号码不能为空" dc:"手机号码"`
 }
 
-type UserRegisterRes struct{}
+type UserRegisterRes struct {
+	UserId int `json:"id"`
+}

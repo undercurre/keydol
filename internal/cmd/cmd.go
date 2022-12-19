@@ -3,10 +3,11 @@ package cmd
 import (
 	"context"
 
+	"keybol/internal/controller"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcmd"
-	"keybol/internal/controller"
 )
 
 var (
@@ -19,7 +20,7 @@ var (
 			s.Group("/", func(group *ghttp.RouterGroup) {
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
 				group.Bind(
-					controller.Hello,
+					controller.User,
 				)
 			})
 			s.Run()

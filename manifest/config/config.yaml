@@ -7,5 +7,12 @@ logger:
   level : "all"
   stdout: true
 
+# Database.
+database:
+  logger:
+    level:   "all"
+    stdout:  true
 
-
+  default:
+    link:   "mysql:root:123456@tcp(127.0.0.1:3306)/gotest"
+    debug:  true

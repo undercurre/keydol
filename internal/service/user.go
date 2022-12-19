@@ -13,6 +13,7 @@ import (
 type (
 	IUser interface {
 		Register(ctx context.Context, in model.UserRegisterInput) (out model.UserRegisterOutput, err error)
+		List(ctx context.Context, in model.UserListInput) (out *model.UserListOutput, err error)
 	}
 )
 

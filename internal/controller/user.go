@@ -25,9 +25,20 @@ func (a *cUser) Register(ctx context.Context, req *backend.UserRegisterReq) (res
 }
 
 func (a *cUser) List(ctx context.Context, req *backend.UserListReq) (res *backend.UserListRes, err error) {
-	out, err := service.User().List(ctx)
+	list, err := service.User().List(ctx, model.UserListInput{
+		Page:     req.Page,
+		Size:     req.Size,
+		Username: req.Username,
+		Email:    req.Email,
+		Phone:    req.Phone,
+	})
 	if err != nil {
 		return nil, err
 	}
-	return out;
+	return &backend.UserListRes{
+		List:  list.List,
+		Page:  list.Page,
+		Size:  list.Size,
+		Total: list.Total,
+	}, nil
 }

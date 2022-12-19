@@ -22,6 +22,7 @@ type UserListReq struct {
 	Id       string `json:"id"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
+	CommonPaginationReq
 }
 
 type UserListRes struct {

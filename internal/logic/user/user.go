@@ -2,13 +2,14 @@ package user
 
 import (
 	"context"
-	"keybol/apiv1/backend"
 	"keybol/internal/dao"
 	"keybol/internal/model"
+	"keybol/internal/model/entity"
 	"keybol/internal/service"
 
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/util/gconv"
 )
 
 type sUser struct{}
@@ -45,10 +46,40 @@ func (s *sUser) Register(ctx context.Context, in model.UserRegisterInput) (out m
 	return model.UserRegisterOutput{UserId: int(lastInsertID)}, err
 }
 
-func (s *sUser) List(ctx context.Context, in model.UserListInput) (users *[]backend.UserListRes, err error) {
-	users, err = dao.User.Ctx(ctx).All()
-	if err != nil {
-		return users, err
+func (s *sUser) List(ctx context.Context, in model.UserListInput) (out *model.UserListOutput, err error) {
+	var (
+		m = dao.User.Ctx(ctx)
+	)
+	out = &model.UserListOutput{
+		Page: in.Page,
+		Size: in.Size,
 	}
-	return users, err
+
+	// 分配查询
+	listModel := m.Page(in.Page, in.Size)
+	// 排序方式
+	// listModel = listModel.OrderDesc(dao.User.Columns().Username)
+
+	// 执行查询
+	var list []*entity.User
+	if err := listModel.Scan(&list); err != nil {
+		return out, err
+	}
+	// 没有数据
+	if len(list) == 0 {
+		return out, nil
+	}
+	var (
+		temp, tempErr = m.Count()
+	)
+	out.Total = gconv.Int(temp)
+	err = tempErr
+	if err != nil {
+		return out, err
+	}
+
+	if err := listModel.Scan(&out.List); err != nil {
+		return out, err
+	}
+	return
 }

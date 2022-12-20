@@ -1,5 +1,7 @@
 package model
 
+import "github.com/gogf/gf/v2/os/gtime"
+
 type UserRegisterInput struct {
 	Username string
 	Password string
@@ -20,8 +22,17 @@ type UserListInput struct {
 }
 
 type UserListOutput struct {
-	List  interface{} `json:"list" description:"列表"`
-	Page  int         `json:"page" description:"分页码"`
-	Size  int         `json:"size" description:"分页数量"`
-	Total int         `json:"total" description:"数据总数"`
+	List  []UserListOutputItem `json:"list" description:"列表"`
+	Page  int                  `json:"page" description:"分页码"`
+	Size  int                  `json:"size" description:"分页数量"`
+	Total int                  `json:"total" description:"数据总数"`
+}
+
+type UserListOutputItem struct {
+	Id         int         `json:"id"         ` //
+	Username   string      `json:"username"   ` //
+	Email      string      `json:"email"      ` //
+	Phone      string      `json:"phone"      ` //
+	Createtime *gtime.Time `json:"createtime" ` //
+	Updatetime *gtime.Time `json:"updatetime" ` //
 }

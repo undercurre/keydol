@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"keybol/internal/controller"
 
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/v2/frame/g"
@@ -24,21 +25,19 @@ var (
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
 
 				// 调试路由
-				group.ALL("/backend/user/register", func(r *ghttp.Request) {
-					r.Response.WriteJson(gtoken.Succ("hello"))
-				})
 			})
-			MultiLogin, err := g.Cfg().Get(ctx, "gToken.MultiLogin")
 			// 认证接口
 			loginFunc := Login
 			// 启动gtoken
 			gfToken = &gtoken.GfToken{
+				CacheMode:        1,
 				ServerName:       TestServerName,
-				LoginPath:        "/login",
+				LoginPath:        "/backend/login",
 				LoginBeforeFunc:  loginFunc,
-				LogoutPath:       "/user/logout",
-				AuthExcludePaths: g.SliceStr{"/user/list", "/backend/user/list"}, // 不拦截路径 /user/info,/system/user/info,/system/user,
-				MultiLogin:       MultiLogin.Bool(),
+				LogoutPath:       "/backend/user/logout",
+				AuthPaths:        g.SliceStr{"/backend/user/list"},
+				AuthExcludePaths: g.SliceStr{"backend/user/register"}, // 不拦截路径 /user/info,/system/user/info,/system/user,
+				MultiLogin:       true,
 			}
 			s.Group("/", func(group *ghttp.RouterGroup) {
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
@@ -46,9 +45,9 @@ var (
 				if err != nil {
 					panic(err)
 				}
-				group.ALL("/backend/user/list", func(r *ghttp.Request) {
-					r.Response.WriteJson(gtoken.Succ("system user info"))
-				})
+				group.Bind(
+					controller.User,
+				)
 			})
 			s.Run()
 			return nil

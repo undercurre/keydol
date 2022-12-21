@@ -17,6 +17,7 @@ func (a *cUser) Register(ctx context.Context, req *backend.UserRegisterReq) (res
 		Password: req.Password,
 		Email:    req.Email,
 		Phone:    req.Phone,
+		RoleIds:  req.RoleIds,
 	})
 	if err != nil {
 		return nil, err

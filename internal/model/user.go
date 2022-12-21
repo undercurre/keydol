@@ -7,6 +7,7 @@ type UserRegisterInput struct {
 	Password string
 	Email    string
 	Phone    string
+	RoleIds  string
 }
 
 type UserRegisterOutput struct {

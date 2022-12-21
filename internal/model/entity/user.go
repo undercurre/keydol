@@ -13,8 +13,10 @@ type User struct {
 	Id         int         `json:"id"         ` //
 	Username   string      `json:"username"   ` //
 	Password   string      `json:"password"   ` //
+	Usersalt   string      `json:"usersalt"   ` //
 	Email      string      `json:"email"      ` //
 	Phone      string      `json:"phone"      ` //
+	RoleIds    string      `json:"roleIds"    ` //
 	Createtime *gtime.Time `json:"createtime" ` //
 	Updatetime *gtime.Time `json:"updatetime" ` //
 }

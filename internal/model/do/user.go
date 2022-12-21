@@ -15,8 +15,10 @@ type User struct {
 	Id         interface{} //
 	Username   interface{} //
 	Password   interface{} //
+	Usersalt   interface{} //
 	Email      interface{} //
 	Phone      interface{} //
+	RoleIds    interface{} //
 	Createtime *gtime.Time //
 	Updatetime *gtime.Time //
 }

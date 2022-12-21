@@ -2,7 +2,12 @@ package cmd
 
 import (
 	"context"
+	"keybol/internal/consts"
 	"keybol/internal/controller"
+	"keybol/internal/dao"
+	"keybol/internal/model/entity"
+	"keybol/utility"
+	"strconv"
 
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/v2/frame/g"
@@ -36,7 +41,7 @@ var (
 				LoginBeforeFunc:  loginFunc,
 				LogoutPath:       "/backend/user/logout",
 				AuthPaths:        g.SliceStr{"/backend/user/list"},
-				AuthExcludePaths: g.SliceStr{"backend/user/register"}, // 不拦截路径 /user/info,/system/user/info,/system/user,
+				AuthExcludePaths: g.SliceStr{"/backend/user/register"}, // 不拦截路径 /user/info,/system/user/info,/system/user,
 				MultiLogin:       true,
 			}
 			s.Group("/", func(group *ghttp.RouterGroup) {
@@ -58,11 +63,23 @@ var (
 func Login(r *ghttp.Request) (string, interface{}) {
 	username := r.Get("username").String()
 	password := r.Get("password").String()
+	ctx := context.TODO()
 
 	if username == "" || password == "" {
 		r.Response.WriteJson(gtoken.Fail("账号或密码错误."))
 		r.ExitAll()
 	}
+
+	User := entity.User{}
+	err := dao.User.Ctx(ctx).Where("username", username).Scan(&User)
+	if err != nil {
+		r.Response.WriteJson(gtoken.Fail("账号或密码错误."))
+		r.ExitAll()
+	}
+	if utility.EncryptPassword(password, User.Usersalt) != User.Password {
+		r.Response.WriteJson(gtoken.Fail("账号或密码错误."))
+		r.ExitAll()
+	}
 	// 唯一标识，扩展参数user data
-	return username, "mieye"
+	return consts.GTokenAdminPrefix + strconv.Itoa(User.Id), User
 }

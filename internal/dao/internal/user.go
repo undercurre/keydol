@@ -23,8 +23,10 @@ type UserColumns struct {
 	Id         string //
 	Username   string //
 	Password   string //
+	Usersalt   string //
 	Email      string //
 	Phone      string //
+	RoleIds    string //
 	Createtime string //
 	Updatetime string //
 }
@@ -34,8 +36,10 @@ var userColumns = UserColumns{
 	Id:         "id",
 	Username:   "username",
 	Password:   "password",
+	Usersalt:   "usersalt",
 	Email:      "email",
 	Phone:      "phone",
+	RoleIds:    "roleIds",
 	Createtime: "createtime",
 	Updatetime: "updatetime",
 }

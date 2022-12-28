@@ -9,7 +9,6 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goflyfox/gtoken v1.5.7
-	github.com/gogf/gf v1.16.9
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.2.5
 	github.com/gogf/gf/v2 v2.2.5
 	github.com/magiconair/properties v1.8.7 // indirect

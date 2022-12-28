@@ -5,6 +5,7 @@ import (
 	"keybol/internal/consts"
 	"keybol/internal/controller"
 	"keybol/internal/dao"
+	"keybol/internal/middleware"
 	"keybol/internal/model/entity"
 	"keybol/utility"
 	"strconv"
@@ -28,7 +29,7 @@ var (
 			// 不认证接口
 			s.Group("/", func(group *ghttp.RouterGroup) {
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
-
+				group.Middleware(middleware.MiddlewareCORS)
 				// 调试路由
 			})
 			// 认证接口
@@ -41,11 +42,12 @@ var (
 				LoginBeforeFunc:  loginFunc,
 				LogoutPath:       "/backend/user/logout",
 				AuthPaths:        g.SliceStr{"/backend/user/list"},
-				AuthExcludePaths: g.SliceStr{"/backend/user/register"}, // 不拦截路径 /user/info,/system/user/info,/system/user,
+				AuthExcludePaths: g.SliceStr{"/backend/user/register"},
 				MultiLogin:       true,
 			}
 			s.Group("/", func(group *ghttp.RouterGroup) {
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
+				group.Middleware(middleware.MiddlewareCORS)
 				err := gfToken.Middleware(ctx, group)
 				if err != nil {
 					panic(err)

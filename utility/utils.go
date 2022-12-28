@@ -1,6 +1,6 @@
 package utility
 
-import "github.com/gogf/gf/crypto/gsha1"
+import "github.com/gogf/gf/v2/crypto/gsha1"
 
 // 密码加密
 func EncryptPassword(password, salt string) string {

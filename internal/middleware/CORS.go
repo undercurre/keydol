@@ -8,7 +8,7 @@ import (
 
 func MiddlewareCORS(r *ghttp.Request) {
 	corsOptions := r.Response.DefaultCORSOptions()
-	corsOptions.AllowDomain = []string{"127.0.0.1"}
+	corsOptions.AllowDomain = []string{"127.0.0.1", "localhost"}
 	if !r.Response.CORSAllowedOrigin(corsOptions) {
 		r.Response.WriteStatus(http.StatusForbidden)
 		return

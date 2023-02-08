@@ -1,18 +1,29 @@
 server:
-  address:     ":8000"
+  address: ":7000"
   openapiPath: "/api.json"
   swaggerPath: "/swagger"
 
 logger:
-  level : "all"
+  level: "all"
   stdout: true
 
 # Database.
 database:
   logger:
-    level:   "all"
-    stdout:  true
+    level: "all"
+    stdout: true
 
   default:
-    link:   "mysql:root:123456@tcp(127.0.0.1:3306)/gotest"
-    debug:  true
+    link: "mysql:root:123456@tcp(127.0.0.1:3306)/gotest"
+    debug: true
+
+gfcli:
+  build:
+    name: "gf"
+    arch: "amd64"
+    system: "linux"
+    mod: "none"
+    packSrc: "resource,manifest"
+    version: "v1.0.0"
+    output: "./bin"
+    extra: ""

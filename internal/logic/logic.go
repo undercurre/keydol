@@ -5,5 +5,6 @@
 package logic
 
 import (
+	_ "keybol/internal/logic/mission"
 	_ "keybol/internal/logic/user"
 )

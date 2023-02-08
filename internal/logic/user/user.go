@@ -4,6 +4,7 @@ import (
 	"context"
 	"keybol/internal/dao"
 	"keybol/internal/model"
+	"keybol/internal/model/do"
 	"keybol/internal/model/entity"
 	"keybol/internal/service"
 	"keybol/utility"
@@ -43,6 +44,20 @@ func (s *sUser) Register(ctx context.Context, in model.UserRegisterInput) (out m
 		return out, err
 	}
 	return model.UserRegisterOutput{UserId: int(lastInsertID)}, err
+}
+
+func (s *sUser) GetUserInfo(ctx context.Context, in model.UserGetInfoInput) (out model.UserGetInfoOutput, err error) {
+	var user *do.User
+	err = dao.User.Ctx(ctx).Where("id=?", in.UserId).Scan(&user)
+	if err != nil {
+		return out, err
+	}
+	return model.UserGetInfoOutput{
+		Username: gconv.String(user.Username),
+		Email:    gconv.String(user.Email),
+		Phone:    gconv.String(user.Phone),
+		RoleIds:  gconv.String(user.RoleIds),
+	}, err
 }
 
 func (s *sUser) List(ctx context.Context, in model.UserListInput) (out *model.UserListOutput, err error) {

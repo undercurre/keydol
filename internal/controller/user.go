@@ -25,6 +25,21 @@ func (a *cUser) Register(ctx context.Context, req *backend.UserRegisterReq) (res
 	return &backend.UserRegisterRes{UserId: out.UserId}, nil
 }
 
+func (a *cUser) GetUserInfo(ctx context.Context, req *backend.UserGetInfoReq) (res *backend.UserGetInfoRes, err error) {
+	out, err := service.User().GetUserInfo(ctx, model.UserGetInfoInput{
+		UserId: req.UserId,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &backend.UserGetInfoRes{
+		Username: out.Username,
+		Email:    out.Email,
+		Phone:    out.Phone,
+		RoleIds:  out.RoleIds,
+	}, nil
+}
+
 func (a *cUser) List(ctx context.Context, req *backend.UserListReq) (res *backend.UserListRes, err error) {
 	list, err := service.User().List(ctx, model.UserListInput{
 		Page:     req.Page,

@@ -19,6 +19,18 @@ type UserRegisterRes struct {
 	UserId int `json:"id"`
 }
 
+type UserGetInfoReq struct {
+	g.Meta `path:"/backend/user/getInfo" tags:"User" method:"get" summary:"Get info of a user"`
+	UserId int `json:"id"`
+}
+
+type UserGetInfoRes struct {
+	Username string `json:"username" v:"required#用户名不能为空"  	 dc:"用户名"`
+	Email    string `json:"email"	 v:"required#邮箱地址不能为空" 	 dc:"邮箱地址"`
+	Phone    string `json:"phone"    v:"required#手机号码不能为空"	 dc:"手机号码"`
+	RoleIds  string `json:"roleId"   								dc:"权限角色"`
+}
+
 type UserListReq struct {
 	g.Meta   `path:"/backend/user/list" tags:"User" method:"get" summary:"List of users"`
 	Username string `json:"username"`

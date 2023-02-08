@@ -14,6 +14,16 @@ type UserRegisterOutput struct {
 	UserId int `json:"id"`
 }
 
+type UserGetInfoInput struct {
+	UserId int `json:"id"`
+}
+
+type UserGetInfoOutput struct {
+	Username string
+	Email    string
+	Phone    string
+	RoleIds  string
+}
 type UserListInput struct {
 	Username string
 	Email    string

@@ -40,6 +40,7 @@ func (a *cMission) Update(ctx context.Context, req *backend.MissionUpdateReq) (r
 	out, err := service.Mission().Update(ctx, model.MissionUpdateInput{
 		MissionName: req.MissionName,
 		Detail:      req.Detail,
+		Status:      req.Status,
 		Deadline:    gtime.New(req.Deadline),
 		MissionId:   req.MissionId,
 	})

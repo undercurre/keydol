@@ -24,6 +24,7 @@ type MissionDeleteOutput struct {
 type MissionUpdateInput struct {
 	MissionId   int
 	Detail      string
+	Status      int
 	MissionName string
 	Deadline    *gtime.Time
 }

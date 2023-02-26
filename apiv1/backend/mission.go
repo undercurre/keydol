@@ -29,6 +29,7 @@ type MissionUpdateReq struct {
 	g.Meta      `path:"/backend/mission/update" tags:"Mission" method:"post" summary:"Update a Mission"`
 	MissionId   int    `json:"id" v:"required#id不能为空"  	dc:"id"`
 	MissionName string `json:"missionname" v:"required#任务名不能为空"  	dc:"任务名"`
+	Status      int    `json:"status" dc:"任务状态"`
 	Detail      string `json:"detail"  	dc:"任务详情"`
 	Deadline    string `json:"deadline" v:"required#最后期限不能为空"  	dc:"最后期限"`
 }

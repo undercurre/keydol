@@ -52,6 +52,7 @@ func (s *sMission) Update(ctx context.Context, in model.MissionUpdateInput) (out
 	//插入数据返回id
 	_, err = dao.Mission.Ctx(ctx).Data(g.Map{
 		"name":     in.MissionName,
+		"status":   in.Status,
 		"detail":   in.Detail,
 		"deadline": in.Deadline,
 	}).Where("id", in.MissionId).Update()

@@ -24,6 +24,6 @@ gfcli:
     system: "linux"
     mod: "none"
     packSrc: "resource,manifest"
-    version: "v1.0.0"
+    version: "v1.0.1"
     output: "./bin"
     extra: ""

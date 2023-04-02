@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"keybol/internal/consts"
 	"keybol/internal/controller"
 	"keybol/internal/dao"
@@ -10,12 +11,19 @@ import (
 	"keybol/utility"
 	"strconv"
 
+	"net/url"
+
 	"github.com/goflyfox/gtoken/gtoken"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcmd"
 	"github.com/gogf/gf/v2/text/gstr"
 )
+
+type Response struct {
+	Openid     string `json:"openid"`
+	SessionKey string `json:"session_key"`
+}
 
 var (
 	TestServerName string
@@ -67,25 +75,74 @@ var (
 )
 
 func Login(r *ghttp.Request) (string, interface{}) {
+	loginType := r.Get("type").String()
+	loginCode := r.Get("code").String()
 	username := r.Get("username").String()
 	password := r.Get("password").String()
+
 	ctx := context.TODO()
 
-	if username == "" || password == "" {
-		r.Response.WriteJson(gtoken.Fail("账号或密码错误."))
-		r.ExitAll()
+	User := entity.User{}
+
+	// 账密
+	if loginType == "primary" || loginType == "" {
+		if username == "" || password == "" {
+			r.Response.WriteJson(gtoken.Fail("账号或密码为空."))
+			r.ExitAll()
+		}
+
+		// 查询不到
+		err := dao.User.Ctx(ctx).Where("username", username).Scan(&User)
+		if err != nil {
+			r.Response.WriteJson(gtoken.Fail("没有这个账号."))
+			r.ExitAll()
+		}
+
+		// 密码错误
+		if utility.EncryptPassword(password, User.Usersalt) != User.Password {
+			r.Response.WriteJson(gtoken.Fail("账号或密码错误."))
+			r.ExitAll()
+		}
 	}
 
-	User := entity.User{}
-	err := dao.User.Ctx(ctx).Where("username", username).Scan(&User)
-	if err != nil {
-		r.Response.WriteJson(gtoken.Fail("账号或密码错误."))
-		r.ExitAll()
+	// 微信
+	if loginType == "wechat" {
+		if loginCode == "" {
+			r.Response.WriteJson(gtoken.Fail("账号或密码为空."))
+		}
+
+		client := g.Client()
+
+		var wechatBaseURL = "https://api.weixin.qq.com/sns/jscode2session"
+
+		// 构建一个 URL 对象
+		u, err := url.Parse(wechatBaseURL)
+		if err != nil {
+			panic(err)
+		}
+
+		// 设置查询参数
+		q := u.Query()
+		q.Set("appid", "wx7283eac281febaaf")
+		q.Set("secret", "d67a5e24c9af975b5cde81aa64d64613")
+		q.Set("js_code", "0a1XhIkl2rlI3b4YA6nl2kpTKr1XhIk-")
+		q.Set("grant_type", "authorization_code")
+		u.RawQuery = q.Encode()
+		urlStr := u.String()
+
+		resp, err := client.Get(ctx, urlStr)
+
+		if err != nil {
+			fmt.Println("error:", err)
+		}
+
+		fmt.Println("status:", resp.Status)
+		fmt.Println("body:", resp.Body)
+
+		// 查询
+		// err := dao.
 	}
-	if utility.EncryptPassword(password, User.Usersalt) != User.Password {
-		r.Response.WriteJson(gtoken.Fail("账号或密码错误."))
-		r.ExitAll()
-	}
+
 	// 唯一标识，扩展参数user data
 	return consts.GTokenAdminPrefix + strconv.Itoa(User.Id), User
 }
